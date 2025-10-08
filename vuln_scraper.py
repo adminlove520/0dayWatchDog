@@ -152,6 +152,21 @@ class VulnScraper:
                 md_content += format_markdown(vuln, idx, poc_urls)
                 md_content += "\n---\n"
 
+        # 添加版权信息
+        md_content += """
+---
+<div align="center">
+
+## 版权信息
+
+东方隐侠安全团队（[https://www.dfyxsec.com/](https://www.dfyxsec.com/)）  
+Anonymous（[https://github.com/adminlove520](https://github.com/adminlove520)）  
+东方隐侠安全团队公众号  
+![公众号](../wemp.jpg)
+
+</div>
+"""
+        
         return md_content
 
     def save_report(self, content, report_date=None):
