@@ -17,7 +17,7 @@ __pycache__/
 .env/
 
 # 漏洞报告输出目录
-vulnerability_reports/
+# vulnerability_reports/
 
 # 配置文件
 vuln_crawler_config.json
