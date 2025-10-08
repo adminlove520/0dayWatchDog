@@ -46,7 +46,27 @@ pip install -r requirements.txt
 ```
 
 ### 基本使用
-
+#### 配置环境变量
+```bash
+# 设置GitHub API令牌（用于PoC搜索）
+export GITHUB_TOKEN=${VULN_GITHUB_TOKEN}
+export DAYS_BACK=3
+export threatbook_api_key=${VULN_threatbook_api_key}
+```
+- 配置文件
+  - 支持自定义数据源、时间范围、输出目录等
+  - **密钥配置文件**：[vuln_crawler_config_example.json](vuln_crawler_config_example.json)
+  - 密钥配置文件说明：
+    - `GITHUB_TOKEN`：GitHub API访问令牌（用于PoC搜索）
+    - `threatbook_api_key`：微步在线威胁情报API密钥
+  - **参数配置文件**：[config.json](config.json)
+  - 配置文件说明：
+    - `proxy`：HTTP/HTTPS代理配置（可选）
+    - `data_sources`：启用的数据源（默认全部启用）
+    - `report`：报告生成配置（是否包含PoC、漏洞等级过滤等）
+      - `include_poc`：是否包含PoC代码（默认True）
+      - `severity_filter`：漏洞等级过滤（默认["critical", "high"]）
+  
 #### 1. 图形界面模式（推荐）
 ```bash
 python main.py
@@ -58,6 +78,7 @@ python main.py
 python vuln_scraper.py
 
 # 指定爬取时间范围（例如7天）
+# 注意：命令行参数优先级高于环境变量(您也可通过workflow参数指定DAYS_BACK)
 DAYS_BACK=7 python vuln_scraper.py
 
 # 搜索特定漏洞信息
@@ -143,5 +164,3 @@ A: 在GitHub → Settings → Developer settings → Personal access tokens创�
 ### Q: 报告中的参考链接格式异常？
 A: 确保所有数据源的reference字段均返回列表类型，可通过`utils.py`中的`format_markdown`函数调整格式。
 
-## 许可证
-[MIT](LICENSE)
