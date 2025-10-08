@@ -1,0 +1,13 @@
+{
+  "data_sources": {
+    "cisa": true,
+    "oscs": true,
+    "qianxin": true,
+    "changtin": true,
+    "threatbook": true
+  },
+  "report": {
+    "include_poc": true,
+    "severity_filter": ["critical", "high"]
+  }
+}

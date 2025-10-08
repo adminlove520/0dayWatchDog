@@ -1,0 +1,28 @@
+# Python虚拟环境
+venv/
+
+# Mac系统文件
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# 日志文件
+*.log
+vuln_crawler.log
+
+# 缓存文件
+__pycache__/
+*.py[cod]
+*$py.class
+.env/
+
+# 漏洞报告输出目录
+vulnerability_reports/
+
+# 配置文件
+vuln_crawler_config.json
+config.json
+
+
+# 可执行文件
+VulnCrawler.spec

@@ -1,0 +1,70 @@
+name: 0day-monitor 0day监控
+
+on:
+  schedule:
+    - cron: '0 9 * * *'   # UTC 时间每天早上9点执行
+  workflow_dispatch:
+    inputs:
+      days_back:
+        description: '爬取过去几天的漏洞信息 (默认3天)'
+        required: false
+        default: '3'
+        type: choice
+        options:
+          - '3'
+          - '7'
+          - '14'
+          - '30'
+
+jobs:
+  crawl-and-update:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 30
+
+    steps:
+      - name: 检出仓库
+        uses: actions/checkout@v4
+
+      - name: 设置Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: 安装依赖
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: 安装Playwright浏览器
+        run: |
+          python -m playwright install chromium
+          python -m playwright install-deps
+
+      - name: 执行爬虫脚本
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            DAYS_BACK=${{ github.event.inputs.days_back }} python vuln_scraper.py
+          else
+            DAYS_BACK=7 python vuln_scraper.py
+          fi
+
+      - name: 获取最新文件
+        id: files
+        run: |
+          JSON_FILE=$(ls vulnerability_reports/vulnerability_report_*.json | sort -r | head -n 1)
+          MD_FILE=$(ls vulnerability_reports/vulnerability_report_*.md | sort -r | head -n 1)
+          echo "json_file=${JSON_FILE}" >> $GITHUB_OUTPUT
+          echo "md_file=${MD_FILE}" >> $GITHUB_OUTPUT
+
+      - name: 自动提交更新
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          # git add -f result/0day_*.json result/0day_*.md
+          git add -f  vulnerability_reports/vulnerability_report_*.md  #仅更新md文件
+          if [ -n "$(git status --porcelain)" ]; then
+            git commit -m "自动更新0day: $(date +'%Y-%m-%d %H:%M')"
+            git push
+          else
+            echo "无变更可提交"
+          fi

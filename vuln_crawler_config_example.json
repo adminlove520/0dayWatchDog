@@ -1,0 +1,4 @@
+{
+  "token": "${VULN_CRAWLER_TOKEN}",
+  "github_token": ""
+}
