@@ -34,7 +34,7 @@
 ## 快速开始
 
 ### 环境要求
-- Python 3.9+ 
+- Python 3.9+ (python3.12.1在使用GUI时，PyQt6将存在兼容性BUG，因此建议使用3.10+左右的python版本~)
 - 依赖包：见requirements.txt
 - 网络连接（部分数据源可能需要代理）
 
