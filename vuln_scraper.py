@@ -178,10 +178,6 @@ Anonymous（[https://github.com/adminlove520](https://github.com/adminlove520)�
         date_dir = os.path.join(self.output_dir, f"vulnerability_report_{report_date}")
         os.makedirs(date_dir, exist_ok=True)
         
-        # 创建vulnerability_reports目录
-        reports_dir = os.path.join(os.getcwd(), "vulnerability_reports")
-        os.makedirs(reports_dir, exist_ok=True)
-        
         # 保存到日期目录
         filename = f"vulnerability_report_{report_date}.md"
         file_path = os.path.join(date_dir, filename)
@@ -189,8 +185,8 @@ Anonymous（[https://github.com/adminlove520](https://github.com/adminlove520)�
         with open(file_path, 'w', encoding='utf-8') as f:
             f.write(content)
         
-        # 同步更新daily.md
-        daily_path = os.path.join(reports_dir, "daily.md")
+        # 同步更新daily.md，使用self.output_dir作为基础目录，确保路径一致性
+        daily_path = os.path.join(self.output_dir, "daily.md")
         with open(daily_path, 'w', encoding='utf-8') as f:
             f.write(content)
         
